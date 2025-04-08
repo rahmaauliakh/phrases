@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f0f0f0;
+
+        }
+        .chat-list {
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #D76C82;
+        }
+        .chat-window {
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+        }
+        .chat-header, .chat-footer {
+            background-color:#D76C82;
+            padding: 10px;
+            margin: 10px;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .chat-input {
+            width: 100%;
+            border-radius: 20px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 75%;
+        }
+        .message.admin {
+            background-color: #EBE8DB;
+            align-self: flex-start;
+        }
+        .message.user {
+            background-color: #B03052;
+            color: white;
+            align-self: flex-end;
+        }
+        h5 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn.ms {
+    margin-left: auto; /* Menempatkan tombol ke kanan */
+    background-color: white;
+}
+
+        @media (max-width: 768px) {
+            .chat-list {
+                height: 100vh;
+                display: block;
+            }
+            .chat-window {
+                height: 100vh;
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 chat-list p-3" id="chatList">
+                <h5>List Of Phrases
+                    <a href="index.html" class="btn ms">back</a></h5>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Keep going')">Keep going</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Drop by')">Drop by</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('No wonder')">No wonder</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Tied up')">Tied up</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Ahead of / On / Behind schedule')">Ahead of / On / Behind schedule</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('On me')">On me</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Split')">Split</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Stuck in traffic')">Stuck in traffic</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('In an hour')">In an hour</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Get a move on')">Get a move on</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('It slipped my mind')">It slipped my mind</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Under a lot of pressure')">Under a lot of pressure</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Upside down Right side up')">Upside down / Right side up</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Drop something off')">Drop something off</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Have you yet')">Have you ... yet?</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Get through')">Get through</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Right away')">Right away</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Put up with something')">Put up with something</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('In the same boat')">In the same boat</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('I’m not following you')">I’m not following you</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Have change')">Have change</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Comes in')">Comes in</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('I’d like')">I’d like ...</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('I’ve been waiting for a long time')">I’ve been waiting for a long time</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('It’s not the end of the world')">It’s not the end of the world</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Get cut off')">Get cut off</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Make up my mind')">Make up my mind</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Stay up')">Stay up</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Oversleep')">Oversleep</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('On my way')">On my way</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Gone for the day')">Gone for the day</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Get sidetracked')">Get sidetracked</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('A win-win situation')">A win-win situation</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('That’s it')">That’s it (nothing more)</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('It’s about time')">It’s about time</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Get it (answering a call)')">Get it (answering a call)</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Pick up')">Pick up</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Can I take a rain check?')">Can I take a rain check?</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('Take time off')">Take time off</a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="openChat('On top of that')">On top of that</a>
+                    
+                </div>
+            </div>
+            <div class="col-md-8 chat-window" id="Keep going">
+                <div class="chat-header d-flex justify-content-between align-items-center">
+                    <button class="btn d-md-none" onclick="goBack()">Back</button>
+                    <h6>This is conversation about phrases</h6>
+                </div>
+                <div class="chat-messages d-flex flex-column" id="chatMessages">
+                    <div class="message user" onclick="speakMessage('Excuse me, how do I get to the train station?')">
+                        Excuse me, how do I get to the train station?<br><em>Permisi, bagaimana cara menuju stasiun kereta?</em>
+                    </div>
+                    <div class="message admin" onclick="speakMessage('Just keep going straight, and you\'ll see it on your right.')">
+                        Just <strong>keep going</strong> straight, and you'll see it on your right. 🚉<br><em><strong>Terus saja</strong> lurus, dan kamu akan melihatnya di sebelah kananmu.</em>
+                    </div>
+                    <div class="message user" onclick="speakMessage('So I just keep going down this road?')">
+                        So I just <strong>keep going</strong> down this road?<br><em>Jadi aku <strong>jalan lurus</strong> di jalan ini?</em>
+                    </div>
+                    <div class="message admin" onclick="speakMessage('Yes, exactly! It’s only about 5 minutes from here.')">
+                        Yes, exactly! It’s only about 5 minutes from here.<br><em>Ya, betul! Cuma sekitar 5 menit dari sini.</em>
+                    </div>
+                    <div class="message user" onclick="speakMessage('Great, thank you so much!')">
+                        Great, thank you so much!<br><em>Bagus, terima kasih banyak!</em>
+                    </div>
+                </div>
+                
+                <div class="chat-footer d-flex">
+                    <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+                    <button class="btn ms-2" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+            <div class="col-md-8 chat-window" id="Drop by">
+                <div class="chat-header d-flex justify-content-between align-items-center">
+                    <button class="btn d-md-none" onclick="goBack()">Back</button>
+                    <h6>This is conversation about phrases</h6>
+                </div>
+            
+                <div class="chat-messages d-flex flex-column" id="chatMessages">
+                    <div class="message user" onclick="speakMessage('Hey, are you home this afternoon?')">
+                        Hey, are you home this afternoon?<br><em>Hei, kamu di rumah sore ini?</em>
+                    </div>
+                    <div class="message admin" onclick="speakMessage('Yeah, feel free to drop by!')">
+                        Yeah, feel free to <strong>drop by</strong>!<br><em>Iya, <strong>mampir saja</strong>!</em>
+                    </div>
+                    <div class="message user" onclick="speakMessage('Cool! I’ll drop by around 4.')">
+                        Cool! I’ll <strong>drop by</strong> around 4.<br><em>Keren! Aku <strong>mampir</strong> sekitar jam 4 ya.</em>
+                    </div>
+                    <div class="message admin" onclick="speakMessage('I’ll be waiting. I have snacks ready!')">
+                        I’ll be waiting. I have snacks ready!<br><em>Aku tunggu ya. Camilan sudah siap!</em>
+                    </div>
+                    <div class="message user" onclick="speakMessage('Awesome! See you later.')">
+                        Awesome! See you later.<br><em>Asik! Sampai nanti.</em>
+                    </div>
+                </div>                
+                <div class="chat-footer d-flex">
+                    <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+                    <button class="btn ms-2" onclick="sendMessage()">Send</button>
+                </div> 
+        </div>
+        <div class="col-md-8 chat-window" id="No wonder">
+            <div class="chat-header d-flex justify-content-between align-items-center">
+                <button class="btn d-md-none" onclick="goBack()">Back</button>
+                <h6>This is conversation about phrases</h6>
+            </div>
+        
+            <div class="chat-messages d-flex flex-column" id="chatMessages">
+                <div class="message user" onclick="speakMessage('I didn’t sleep at all last night.')">
+                    I didn’t sleep at all last night. 😴<br><em>Aku sama sekali tidak tidur tadi malam.</em>
+                </div>
+                <div class="message admin" onclick="speakMessage('No wonder you look so tired today.')">
+                    <strong>No wonder</strong> you look so tired today. 😅<br><em><strong>Pantas saja</strong> kamu terlihat sangat lelah hari ini.</em>
+                </div>
+                <div class="message user" onclick="speakMessage('Yeah, I feel like a zombie.')">
+                    Yeah, I feel like a zombie.<br><em>Iya, aku merasa seperti zombie.</em>
+                </div>
+                <div class="message admin" onclick="speakMessage('Try to rest early tonight.')">
+                    Try to rest early tonight.<br><em>Cobalah istirahat lebih awal malam ini.</em>
+                </div>
+                <div class="message user" onclick="speakMessage('Will do! Thanks for the advice.')">
+                    Will do! Thanks for the advice.<br><em>Pasti! Terima kasih atas sarannya.</em>
+                </div>
+            </div>            
+            <div class="chat-footer d-flex">
+                <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+                <button class="btn ms-2" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+        <div class="col-md-8 chat-window" id="Tied up">
+            <div class="chat-header d-flex justify-content-between align-items-center">
+                <button class="btn d-md-none" onclick="goBack()">Back</button>
+                <h6>This is conversation about phrases</h6>
+            </div>
+            <div class="chat-messages d-flex flex-column" id="chatMessages">
+                <div class="message user" onclick="speakMessage('Can you join us for dinner tonight?')">
+                    Can you join us for dinner tonight? 🍽️<br><em>Bisa ikut makan malam dengan kami malam ini?</em>
+                </div>
+                <div class="message admin" onclick="speakMessage('Sorry, I’m tied up with work. Maybe next time!')">
+                    Sorry, I’m <strong>tied up</strong> with work. Maybe next time! 😞<br><em>Maaf, aku <strong>sibuk</strong> dengan pekerjaan. Mungkin lain kali!</em>
+                </div>
+                <div class="message user" onclick="speakMessage('Aw, that’s too bad. We’ll miss you!')">
+                    Aw, that’s too bad. We’ll miss you!<br><em>Yah, sayang sekali. Kami akan merindukanmu!</em>
+                </div>
+                <div class="message admin" onclick="speakMessage('Thanks! Let me know how it goes.')">
+                    Thanks! Let me know how it goes.<br><em>Makasih! Kasih tahu aku nanti gimana acaranya.</em>
+                </div>
+                <div class="message user" onclick="speakMessage('Will do! Hope your work goes smoothly.')">
+                    Will do! Hope your work goes smoothly.<br><em>Pasti! Semoga pekerjaanmu lancar ya.</em>
+                </div>
+            </div>
+               
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<div class="col-md-8 chat-window" id="Ahead of / On / Behind schedule">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('How’s the project going?')">
+            How’s the project going?<br><em>Bagaimana proyeknya?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('We’re actually ahead of schedule! We might finish two days early.')">
+            We’re actually <strong>ahead of schedule</strong>! We might finish two days early. 😃<br><em>Kami malah <strong>lebih cepat dari jadwal</strong>! Mungkin selesai dua hari lebih awal.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Wow, that’s impressive!')">
+            Wow, that’s impressive!<br><em>Wah, itu keren banget!</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Everyone’s been working super hard.')">
+            Everyone’s been working super hard.<br><em>Semua orang bekerja keras banget.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Let’s keep the momentum going!')">
+            Let’s keep the momentum going!<br><em>Ayo terus pertahankan semangatnya!</em>
+        </div>
+
+        <div class="message user" onclick="speakMessage('Are we still on schedule for the event?')">
+            Are we still <strong>on schedule</strong> for the event?<br><em>Apakah kita masih <strong>sesuai jadwal</strong> untuk acaranya?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yes, everything is going as planned. No delays so far.')">
+            Yes, everything is going as planned. No delays so far. 👍<br><em>Ya, semuanya berjalan sesuai rencana. Belum ada keterlambatan.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('That’s a relief!')">
+            That’s a relief!<br><em>Syukurlah!</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Let’s keep it that way until the big day.')">
+            Let’s keep it that way until the big day.<br><em>Semoga tetap seperti ini sampai hari H.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('You got it!')">
+            You got it!<br><em>Siap!</em>
+        </div>
+
+        <div class="message user" onclick="speakMessage('The deadline is tomorrow! Are you done yet?')">
+            The deadline is tomorrow! Are you done yet? 😟<br><em>Tenggat waktunya besok! Kamu sudah selesai?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Not yet, we’re behind schedule because of some issues.')">
+            Not yet, we’re <strong>behind schedule</strong> because of some issues. 😓<br><em>Belum, kami <strong>terlambat dari jadwal</strong> karena beberapa masalah.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Can I help with anything?')">
+            Can I help with anything?<br><em>Bisa aku bantu dengan apa pun?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('That would be amazing. Thank you!')">
+            That would be amazing. Thank you!<br><em>Wah, itu akan sangat membantu. Makasih ya!</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Let’s catch up and finish this together.')">
+            Let’s catch up and finish this together.<br><em>Ayo kejar bareng dan selesaikan ini sama-sama.</em>
+        </div>
+    </div>
+        
+<div class="chat-footer d-flex">
+<input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+<button class="btn ms-2" onclick="sendMessage()">Send</button>
+</div>
+</div>
+<div class="col-md-8 chat-window" id="On me">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Let’s grab some coffee.')">
+            Let’s grab some coffee. ☕<br><em>Ayo kita beli kopi.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Sure! And this time, it’s on me.')">
+            Sure! And this time, it’s <strong>on me</strong>. 😃<br><em>Tentu! Kali ini <strong>aku yang traktir</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Wow, thanks a lot!')">
+            Wow, thanks a lot!<br><em>Wah, makasih banyak!</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('You treated me last time, remember?')">
+            You treated me last time, remember?<br><em>Kamu yang traktir aku terakhir kali, ingat nggak?</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Fair enough! Let’s go.')">
+            Fair enough! Let’s go.<br><em>Ya juga sih! Yuk berangkat.</em>
+        </div>
+    </div>
+    
+<div class="chat-footer d-flex">
+<input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+<button class="btn ms-2" onclick="sendMessage()">Send</button>
+</div>
+</div>
+<div class="col-md-8 chat-window" id="Split">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Should we split the bill?')">
+            Should we <strong>split the bill</strong>? 💰<br><em>Kita <strong>bagi tagihannya</strong>?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Sure, let’s go 50/50.')">
+            Sure, let’s go 50/50.<br><em>Tentu, kita bagi dua aja.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Sounds good to me.')">
+            Sounds good to me.<br><em>Kedengarannya oke buatku.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I’ll pay with my card, you can transfer your part.')">
+            I’ll pay with my card, you can transfer your part.<br><em>Aku bayar pakai kartuku, kamu bisa transfer bagianmu.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Deal! I’ll send it right after.')">
+            Deal! I’ll send it right after.<br><em>Oke! Aku kirim setelah ini ya.</em>
+        </div>
+    </div>     
+<div class="chat-footer d-flex">
+<input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+<button class="btn ms-2" onclick="sendMessage()">Send</button>
+</div>
+</div>
+
+<div class="col-md-8 chat-window" id="Stuck in traffic">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Sorry, I’m going to be late.')">
+            Sorry, I’m going to be late.<br><em>Maaf, aku akan terlambat.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Everything okay?')">
+            Everything okay?<br><em>Semuanya baik-baik saja?</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Yeah, I’m just stuck in traffic.')">
+            Yeah, I’m just <strong>stuck in traffic</strong>.<br><em>Iya, aku cuma <strong>terjebak macet</strong>.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('No worries, take your time.')">
+            No worries, take your time.<br><em>Gak apa-apa, santai aja.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks! I’ll be there as soon as I can.')">
+            Thanks! I’ll be there as soon as I can.<br><em>Makasih! Aku akan ke sana secepat mungkin.</em>
+        </div>
+    </div>
+    
+<div class="chat-footer d-flex">
+<input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+<button class="btn ms-2" onclick="sendMessage()">Send</button>
+</div>
+</div>
+<div class="col-md-8 chat-window" id="In an hour">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('What time is the meeting?')">
+            What time is the meeting?<br><em>Jam berapa rapatnya?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('It starts in an hour.')">
+            It starts <strong>in an hour</strong>.<br><em>Mulai <strong>dalam satu jam</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Oh, I thought it was later.')">
+            Oh, I thought it was later.<br><em>Oh, aku kira lebih nanti.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Nope, better get ready soon.')">
+            Nope, better get ready soon.<br><em>Nggak, sebaiknya segera bersiap.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Alright, I’ll be there on time.')">
+            Alright, I’ll be there on time.<br><em>Oke, aku akan datang tepat waktu.</em>
+        </div>
+    </div>
+    
+<div class="chat-footer d-flex">
+<input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+<button class="btn ms-2" onclick="sendMessage()">Send</button>
+</div>
+</div>
+
+<div class="col-md-8 chat-window" id="Get a move on"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('What time does the movie start?')">
+            What time does the movie start?<br><em>Jam berapa filmnya mulai?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('In 15 minutes! We need to get a move on.')">
+            In 15 minutes! We need to <strong>get a move on</strong>.<br><em>15 menit lagi! Kita harus <strong>cepat-cepat</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Oh no! I’m not even dressed yet.')">
+            Oh no! I’m not even dressed yet.<br><em>Aduh! Aku bahkan belum ganti baju.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Then get a move on! I’ll wait outside.')">
+            Then <strong>get a move on</strong>! I’ll wait outside.<br><em>Kalau begitu <strong>cepatlah</strong>! Aku tunggu di luar.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Okay, give me two minutes!')">
+            Okay, give me two minutes!<br><em>Oke, kasih aku dua menit!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="It slipped my mind"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Did you bring the book I lent you?')">
+            Did you bring the book I lent you?<br><em>Kamu bawa buku yang aku pinjamkan?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Oh no, it slipped my mind! I’m so sorry.')">
+            Oh no, <strong>it slipped my mind</strong>! I’m so sorry.<br><em>Aduh, <strong>aku lupa banget</strong>! Maaf ya.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('It’s okay. Can you bring it tomorrow?')">
+            It’s okay. Can you bring it tomorrow?<br><em>Gak apa-apa. Bisa bawa besok?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Absolutely! I’ll put a reminder this time.')">
+            Absolutely! I’ll put a reminder this time.<br><em>Tentu! Kali ini aku pasang pengingat.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks! I need it for class.')">
+            Thanks! I need it for class.<br><em>Makasih! Aku butuh buat kelas.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Under a lot of pressure"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hey, are you okay? You look stressed.')">
+            Hey, are you okay? You look stressed.<br><em>Hei, kamu baik-baik saja? Kamu kelihatan stres.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yeah, I’m just under a lot of pressure at work.')">
+            Yeah, I’m just <strong>under a lot of pressure</strong> at work.<br><em>Iya, aku lagi <strong>dalam tekanan besar</strong> di kantor.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Deadlines?')">
+            Deadlines?<br><em>Tenggat waktu?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Exactly. Three projects due this week.')">
+            Exactly. Three projects due this week.<br><em>Betul. Tiga proyek harus selesai minggu ini.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Hang in there. You’ve got this!')">
+            Hang in there. You’ve got this!<br><em>Sabar ya. Kamu pasti bisa!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Upside down Right side up"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Why won’t this picture frame hang properly?')">
+            Why won’t this picture frame hang properly?<br><em>Kenapa bingkai foto ini nggak bisa tergantung dengan benar?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Because it’s upside down. 😂')">
+            Because it’s <strong>upside down</strong>. 😂<br><em>Karena itu <strong>terbalik</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Oh no! I didn’t notice that.')">
+            Oh no! I didn’t notice that.<br><em>Aduh! Aku nggak sadar.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('There, I fixed it. Now it’s right side up.')">
+            There, I fixed it. Now it’s <strong>right side up</strong>.<br><em>Sudah, aku benerin. Sekarang <strong>posisinya benar</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks! Looks much better now.')">
+            Thanks! Looks much better now.<br><em>Makasih! Kelihatan jauh lebih bagus sekarang.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Drop something off"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hey, can you drop this package off at the post office for me?')">
+            Hey, can you <strong>drop this package off</strong> at the post office for me?<br><em>Hey, bisa <strong>antar paket ini</strong> ke kantor pos buat aku?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Sure! I’m heading that way anyway.')">
+            Sure! I’m heading that way anyway.<br><em>Tentu! Aku memang mau ke arah sana juga.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks! It needs to go out today.')">
+            Thanks! It needs to go out today.<br><em>Makasih! Itu harus dikirim hari ini.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('No problem. I’ll drop it off after lunch.')">
+            No problem. I’ll <strong>drop it off</strong> after lunch.<br><em>Gampang. Aku akan <strong>antar</strong> setelah makan siang.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('You’re a lifesaver!')">
+            You’re a lifesaver!<br><em>Kamu penyelamat banget!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Have you yet"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about grammar pattern</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Have you finished your homework yet?')">
+            <strong>Have you</strong> finished your homework <strong>yet</strong>?<br><em><strong>Sudahkah kamu</strong> menyelesaikan PR-mu?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Not yet, I’ve been really busy today.')">
+            Not <strong>yet</strong>, I’ve been really busy today.<br><em>Belum, aku sangat sibuk hari ini.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('You should try to finish it before dinner.')">
+            You should try to finish it before dinner.<br><em>Kamu sebaiknya menyelesaikannya sebelum makan malam.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yeah, I’ll get on it right after this.')">
+            Yeah, I’ll get on it right after this.<br><em>Iya, aku akan kerjakan setelah ini.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Good! Don’t leave it until the last minute.')">
+            Good! Don’t leave it until the last minute.<br><em>Bagus! Jangan ditunda sampai detik terakhir.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Get through"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('This week has been so stressful.')">
+            This week has been so stressful.<br><em>Minggu ini benar-benar penuh tekanan.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yeah, but we’ll get through it together.')">
+            Yeah, but we’ll <strong>get through</strong> it together.<br><em>Iya, tapi kita akan <strong>melewatinya</strong> bersama-sama.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks, that really helps.')">
+            Thanks, that really helps.<br><em>Terima kasih, itu sangat membantu.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Anytime! Just remember, tough times don’t last.')">
+            Anytime! Just remember, tough times don’t last.<br><em>Kapan saja! Ingat, masa sulit tidak bertahan lama.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('But strong people do, right?')">
+            But strong people do, right?<br><em>Tapi orang kuat yang bertahan, kan?</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Right away"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Can you send me the report?')">
+            Can you send me the report?<br><em>Bisa kirimkan aku laporannya?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Sure, I’ll do it right away.')">
+            Sure, I’ll do it <strong>right away</strong>.<br><em>Tentu, aku akan melakukannya <strong>segera</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks! The deadline is in 10 minutes.')">
+            Thanks! The deadline is in 10 minutes.<br><em>Makasih! Tenggat waktunya 10 menit lagi.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Don’t worry, I’m on it now.')">
+            Don’t worry, I’m on it now.<br><em>Jangan khawatir, aku sedang mengerjakannya sekarang.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('You’re a lifesaver!')">
+            You’re a lifesaver!<br><em>Kamu penyelamat banget!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<div class="col-md-8 chat-window" id="Put up with something"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Your neighbor is so noisy. How do you deal with that?')">
+            Your neighbor is so noisy. How do you deal with that?<br><em>Tetanggamu berisik banget. Gimana kamu menghadapinya?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I know, right? It’s hard to put up with.')">
+            I know, right? It’s hard to <strong>put up with</strong>.<br><em>Iya kan? Susah <strong>menoleransi</strong>nya.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Have you talked to them about it?')">
+            Have you talked to them about it?<br><em>Kamu sudah bicara sama mereka tentang itu?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Not yet. I’m still trying to be patient.')">
+            Not yet. I’m still trying to be patient.<br><em>Belum. Aku masih mencoba sabar.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('You’re more patient than I am!')">
+            You’re more patient than I am!<br><em>Kamu lebih sabar daripada aku!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="In the same boat"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('I’m really stressed about this exam.')">
+            I’m really stressed about this exam.<br><em>Aku benar-benar stres soal ujian ini.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Don’t worry, I’m in the same boat.')">
+            Don’t worry, I’m in the <strong>same boat</strong>.<br><em>Tenang saja, aku <strong>mengalami hal yang sama</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('At least we’re not alone in this.')">
+            At least we’re not alone in this.<br><em>Setidaknya kita tidak sendirian dalam hal ini.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Exactly! Let’s study together later.')">
+            Exactly! Let’s study together later.<br><em>Betul! Ayo belajar bareng nanti.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Deal! That would help a lot.')">
+            Deal! That would help a lot.<br><em>Setuju! Itu pasti sangat membantu.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="I’m not following you"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('So if we shift the deadline by two days, then the timeline aligns with the budget.')">
+            So if we shift the deadline by two days, then the timeline aligns with the budget.<br><em>Jadi kalau kita undur tenggat dua hari, maka timeline-nya cocok dengan anggarannya.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Wait, I’m not following you.')">
+            Wait, <strong>I’m not following you</strong>.<br><em>Tunggu, <strong>aku nggak ngerti maksudmu</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('I mean, the budget only covers up to Friday, so we have to finish by then.')">
+            I mean, the budget only covers up to Friday, so we have to finish by then.<br><em>Maksudku, anggarannya hanya sampai Jumat, jadi kita harus selesai sebelum itu.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Ah, now I get it.')">
+            Ah, now I get it.<br><em>Ah, sekarang aku paham.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Glad we’re on the same page now.')">
+            Glad we’re on the same page now.<br><em>Senang kita sudah sepemahaman sekarang.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Have change"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hey, do you have change for a 50?')">
+            Hey, do you <strong>have change</strong> for a 50?<br><em>Hei, kamu punya <strong>uang kecil</strong> untuk tukar uang lima puluh?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Let me check... Yeah, I’ve got some tens and fives.')">
+            Let me check... Yeah, I’ve got some tens and fives.<br><em>Coba aku cek... Ya, aku punya beberapa lembar sepuluh dan lima.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Awesome! I need to pay the street vendor.')">
+            Awesome! I need to pay the street vendor.<br><em>Keren! Aku harus bayar pedagang kaki lima.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Here you go. That should work.')">
+            Here you go. That should work.<br><em>Nih, harusnya cukup.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks a lot! You saved me.')">
+            Thanks a lot! You saved me.<br><em>Makasih banyak! Kamu nyelametin aku.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Comes in"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('I like this jacket. Does it come in black?')">
+            I like this jacket. Does it <strong>come in</strong> black?<br><em>Aku suka jaket ini. Apakah <strong>tersedia dalam</strong> warna hitam?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yes, it comes in black, navy, and gray.')">
+            Yes, it <strong>comes in</strong> black, navy, and gray.<br><em>Ya, jaket ini <strong>tersedia dalam</strong> warna hitam, biru dongker, dan abu-abu.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Great! Do you have size M?')">
+            Great! Do you have size M?<br><em>Bagus! Ada ukuran M?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Let me check... Yes, we have medium in all colors.')">
+            Let me check... Yes, we have medium in all colors.<br><em>Bentar ya... Ya, ukuran medium tersedia dalam semua warna.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Awesome! I’ll take the black one.')">
+            Awesome! I’ll take the black one.<br><em>Oke banget! Aku ambil yang hitam, ya.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="I’d like"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hi, I\'d like a cheeseburger, please.')">
+            Hi, <strong>I’d like</strong> a cheeseburger, please.<br><em>Hai, <strong>saya ingin</strong> satu cheeseburger, ya.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Would you like fries with that?')">
+            Would you like fries with that?<br><em>Mau tambah kentang goreng juga?</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Yes, please. And I\'d like a cola too.')">
+            Yes, please. And <strong>I’d like</strong> a cola too.<br><em>Iya, tolong. Dan <strong>saya juga ingin</strong> satu kola.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Got it. Anything else?')">
+            Got it. Anything else?<br><em>Oke. Ada lagi?</em>
+        </div>
+        <div class="message user" onclick="speakMessage('No, that’s all. Thank you!')">
+            No, that’s all. Thank you!<br><em>Tidak, itu saja. Terima kasih!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="I’ve been waiting for a long time"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Excuse me, I\'ve been waiting for a long time.')">
+            Excuse me, <strong>I’ve been waiting for a long time</strong>.<br><em>Permisi, <strong>saya sudah menunggu lama</strong>.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I\'m really sorry for the delay.')">
+            I’m really sorry for the delay.<br><em>Maaf sekali atas keterlambatannya.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Do you know how much longer it will take?')">
+            Do you know how much longer it will take?<br><em>Kamu tahu berapa lama lagi akan butuh waktu?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('It should only be a few more minutes.')">
+            It should only be a few more minutes.<br><em>Harusnya cuma beberapa menit lagi.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Alright, I’ll wait a bit more.')">
+            Alright, I’ll wait a bit more.<br><em>Baiklah, aku tunggu sedikit lagi.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="It’s not the end of the world"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('I failed my driving test again.')">
+            I failed my driving test again. 😞<br><em>Aku gagal ujian mengemudi lagi.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Hey, it\'s not the end of the world.')">
+            Hey, <strong>it's not the end of the world</strong>.<br><em>Hei, <strong>ini bukan akhir dari segalanya</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('It just feels so frustrating.')">
+            It just feels so frustrating.<br><em>Rasanya sangat menyebalkan.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('You can always try again. I believe in you!')">
+            You can always try again. I believe in you! 💪<br><em>Kamu selalu bisa coba lagi. Aku percaya padamu!</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks, that means a lot.')">
+            Thanks, that means a lot.<br><em>Terima kasih, itu sangat berarti.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Get cut off"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hey, I tried calling you earlier.')">
+            Hey, I tried calling you earlier.<br><em>Hei, aku tadi mencoba meneleponmu.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yeah, I know. We got cut off.')">
+            Yeah, I know. We <strong>got cut off</strong>.<br><em>Ya, aku tahu. Kita <strong>terputus</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Oh, I thought you hung up.')">
+            Oh, I thought you hung up.<br><em>Oh, kupikir kamu yang menutup teleponnya.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Nope, bad signal. Let’s try again now.')">
+            Nope, bad signal. Let’s try again now.<br><em>Bukan, sinyalnya jelek. Ayo coba lagi sekarang.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Alright, calling you back!')">
+            Alright, calling you back! 📞<br><em>Baiklah, aku telepon balik ya!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Make up my mind"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Are you joining us for the trip or not?')">
+            Are you joining us for the trip or not?<br><em>Kamu ikut kami untuk liburan ini atau tidak?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I don’t know yet. I still haven’t made up my mind.')">
+            I don’t know yet. I still haven’t <strong>made up my mind</strong>.<br><em>Belum tahu. Aku masih belum <strong>memutuskan</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('What’s holding you back?')">
+            What’s holding you back?<br><em>Apa yang bikin kamu ragu?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I’m not sure if I can take the time off work.')">
+            I’m not sure if I can take the time off work.<br><em>Belum yakin bisa ambil cuti dari kerja.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Let us know soon, okay?')">
+            Let us know soon, okay?<br><em>Kabari kami segera ya?</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Stay up"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('You look really sleepy today.')">
+            You look really sleepy today.<br><em>Kamu kelihatan ngantuk banget hari ini.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yeah, I stayed up late watching a drama.')">
+            Yeah, I <strong>stayed up</strong> late watching a drama.<br><em>Iya, aku <strong>begadang</strong> nonton drama.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('How late did you stay up?')">
+            How late did you <strong>stay up</strong>?<br><em>Seberapa larut kamu <strong>begadang</strong>?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Until 2 AM. I just couldn’t stop watching!')">
+            Until 2 AM. I just couldn’t stop watching!<br><em>Sampai jam 2 pagi. Nggak bisa berhenti nontonnya!</em>
+        </div>
+        <div class="message user" onclick="speakMessage('No wonder you’re tired now!')">
+            No wonder you’re tired now!<br><em>Pantas saja kamu capek sekarang!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Oversleep"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Why were you late to class today?')">
+            Why were you late to class today?<br><em>Kenapa kamu telat ke kelas hari ini?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I overslept and missed my alarm.')">
+            I <strong>overslept</strong> and missed my alarm.<br><em>Aku <strong>kesiangan</strong> dan nggak dengar alarmnya.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('That happens to me all the time!')">
+            That happens to me all the time!<br><em>Itu sering banget terjadi padaku juga!</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I’ll try to sleep earlier tonight.')">
+            I’ll try to sleep earlier tonight.<br><em>Aku bakal coba tidur lebih awal malam ini.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Good idea! We have a test tomorrow.')">
+            Good idea! We have a test tomorrow.<br><em>Ide bagus! Besok kita ada ujian lho.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="On my way"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hey, where are you? The meeting starts soon.')">
+            Hey, where are you? The meeting starts soon.<br><em>Hei, kamu di mana? Rapatnya sebentar lagi mulai.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Don’t worry, I’m on my way.')">
+            Don’t worry, I’m <strong>on my way</strong>.<br><em>Jangan khawatir, aku <strong>lagi dalam perjalanan</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('How long will it take?')">
+            How long will it take?<br><em>Berapa lama lagi?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Around 10 minutes. I’m almost there.')">
+            Around 10 minutes. I’m almost there.<br><em>Sekitar 10 menit lagi. Aku hampir sampai.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Alright, see you soon!')">
+            Alright, see you soon!<br><em>Oke, sampai ketemu sebentar lagi!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Gone for the day"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hi, is Mr. Andi still around?')">
+            Hi, is Mr. Andi still around?<br><em>Hai, apakah Pak Andi masih ada?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Sorry, he’s gone for the day.')">
+            Sorry, he’s <strong>gone for the day</strong>.<br><em>Maaf, dia sudah <strong>pulang hari ini</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Oh, do you know when he’ll be back?')">
+            Oh, do you know when he’ll be back?<br><em>Oh, kamu tahu kapan dia kembali?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('He’ll be in tomorrow morning.')">
+            He’ll be in tomorrow morning.<br><em>Dia akan masuk besok pagi.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Alright, I’ll come back then. Thanks!')">
+            Alright, I’ll come back then. Thanks!<br><em>Baiklah, aku akan kembali besok. Terima kasih!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Get sidetracked"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Did you finish the report?')">
+            Did you finish the report?<br><em>Apakah kamu sudah menyelesaikan laporannya?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Not yet. I got sidetracked by some emails.')">
+            Not yet. I <strong>got sidetracked</strong> by some emails.<br><em>Belum. Aku <strong>teralihkan</strong> oleh beberapa email.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('It happens. Will you be able to finish it today?')">
+            It happens. Will you be able to finish it today?<br><em>Bisa saja. Apakah kamu bisa menyelesaikannya hari ini?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yes, I just need another hour or so.')">
+            Yes, I just need another hour or so.<br><em>Ya, aku hanya butuh sekitar satu jam lagi.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Alright, let me know if you need help.')">
+            Alright, let me know if you need help.<br><em>Baiklah, kabari aku kalau butuh bantuan.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="A win-win situation"> 
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('If we collaborate, we can split the profits.')">
+            If we collaborate, we can split the profits.<br><em>Kalau kita kerja sama, kita bisa bagi keuntungannya.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('That sounds like a win-win situation.')">
+            That sounds like a <strong>win-win situation</strong>.<br><em>Kedengarannya seperti <strong>situasi yang saling menguntungkan</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Exactly! We both benefit from it.')">
+            Exactly! We both benefit from it.<br><em>Tepat! Kita berdua sama-sama untung.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Let’s draw up a plan and get started.')">
+            Let’s draw up a plan and get started.<br><em>Ayo buat rencana dan mulai saja.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('I’m excited. Let’s do this!')">
+            I’m excited. Let’s do this!<br><em>Aku semangat. Ayo kita mulai!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="That’s it">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+<div class="chat-messages d-flex flex-column" id="chatMessages">
+<div class="message user" onclick="speakMessage('Did you finish the list of things to do?')">
+Did you finish the list of things to do?<br><em>Sudah selesai daftar hal yang harus dilakukan?</em>
+</div>
+<div class="message admin" onclick="speakMessage('Yes! I emailed it to you just now.')">
+Yes! I emailed it to you just now.<br><em>Sudah! Baru saja aku kirim lewat email.</em>
+</div>
+<div class="message user" onclick="speakMessage('Great, let me check...')">
+Great, let me check...<br><em>Bagus, aku cek dulu ya...</em>
+</div>
+<div class="message admin" onclick="speakMessage('Let me know if I missed anything.')">
+Let me know if I missed anything.<br><em>Beri tahu aku kalau ada yang terlewat ya.</em>
+</div>
+<div class="message user" onclick="speakMessage('Nope, that’s it. Everything looks perfect!')">
+Nope, <strong>that’s it</strong>. Everything looks perfect!<br><em>Tidak ada, <strong>itu saja</strong>. Semuanya terlihat sempurna!</em>
+</div>
+</div>
+
+
+<div class="chat-footer d-flex">
+<input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+<button class="btn ms-2" onclick="sendMessage()">Send</button>
+</div>
+</div>
+<div class="col-md-8 chat-window" id="Pick up">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Can you pick me up after school?')">
+            Can you <strong>pick me up</strong> after school?<br><em>Bisa jemput aku setelah sekolah?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Sure! I’ll be there at 4 PM.')">
+            Sure! I’ll be there at 4 PM.<br><em>Tentu! Aku akan sampai jam 4 sore.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks! Don’t forget, okay?')">
+            Thanks! Don’t forget, okay?<br><em>Makasih! Jangan lupa ya.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I won’t! See you later.')">
+            I won’t! See you later.<br><em>Nggak bakal! Sampai ketemu nanti.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Pick up">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Can you pick me up after school?')">
+            Can you <strong>pick me up</strong> after school?<br><em>Bisa jemput aku setelah sekolah?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Sure! I’ll be there at 4 PM.')">
+            Sure! I’ll be there at 4 PM.<br><em>Tentu! Aku akan sampai jam 4 sore.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Thanks! Don’t forget, okay?')">
+            Thanks! Don’t forget, okay?<br><em>Makasih! Jangan lupa ya.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I won’t! See you later.')">
+            I won’t! See you later.<br><em>Nggak bakal! Sampai ketemu nanti.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="It’s about time">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hey, you’re finally here!')">
+            Hey, you’re finally here!<br><em>Hei, akhirnya kamu datang juga!</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Yeah, sorry I’m late.')">
+            Yeah, sorry I’m late.<br><em>Iya, maaf aku telat.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('It’s about time! We’ve been waiting forever.')">
+            <strong>It’s about time</strong>! We’ve been waiting forever.<br><em><strong>Akhirnya juga</strong>! Kami sudah nunggu dari tadi.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Traffic was crazy. Let’s go!')">
+            Traffic was crazy. Let’s go!<br><em>Macet banget tadi. Ayo pergi!</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Get it (answering a call)">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Your phone is ringing!')">
+            Your phone is ringing!<br><em>HP kamu bunyi!</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Can you get it? I’m washing my hands.')">
+            Can you <strong>get it</strong>? I’m washing my hands.<br><em>Bisa <strong>angkatin</strong> nggak? Aku lagi cuci tangan.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Sure! Hello?')">
+            Sure! Hello?<br><em>Tentu! Halo?</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Can I take a rain check?">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('Hey, wanna grab dinner tonight?')">
+            Hey, wanna grab dinner tonight?<br><em>Hei, mau makan malam bareng malam ini?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I’d love to, but I’m swamped with work. Can I take a rain check?')">
+            I’d love to, but I’m swamped with work. Can I <strong>take a rain check</strong>?<br><em>Pingin banget, tapi aku lagi banyak kerjaan. Bisa <strong>ditunda dulu</strong> gak?</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Of course! Let’s do it another time.')">
+            Of course! Let’s do it another time.<br><em>Tentu! Kita atur ulang lain waktu ya.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="Take time off">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('You look tired. Are you okay?')">
+            You look tired. Are you okay?<br><em>Kamu kelihatan capek. Kamu baik-baik aja?</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('I’m okay, just exhausted. I think I need to take some time off.')">
+            I’m okay, just exhausted. I think I need to <strong>take some time off</strong>.<br><em>Aku oke, cuma capek banget. Kayaknya aku butuh <strong>ambil cuti</strong>.</em>
+        </div>
+        <div class="message user" onclick="speakMessage('Yeah, a short break could help a lot.')">
+            Yeah, a short break could help a lot.<br><em>Iya, istirahat sebentar bisa bantu banget.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<div class="col-md-8 chat-window" id="On top of that">
+    <div class="chat-header d-flex justify-content-between align-items-center">
+        <button class="btn d-md-none" onclick="goBack()">Back</button>
+        <h6>This is conversation about phrases</h6>
+    </div>
+
+    <div class="chat-messages d-flex flex-column" id="chatMessages">
+        <div class="message user" onclick="speakMessage('I had such a stressful day at work.')">
+            I had such a stressful day at work.<br><em>Hari ini sangat bikin stres di kantor.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Really? What happened?')">
+            Really? What happened?<br><em>Serius? Ada apa?</em>
+        </div>
+        <div class="message user" onclick="speakMessage('My manager gave me extra tasks, and on top of that, my laptop crashed.')">
+            My manager gave me extra tasks, and <strong>on top of that</strong>, my laptop crashed.<br><em>Manajerku kasih tugas tambahan, dan <strong>selain itu</strong>, laptopku rusak.</em>
+        </div>
+        <div class="message admin" onclick="speakMessage('Oh no! That sounds like a rough day.')">
+            Oh no! That sounds like a rough day.<br><em>Aduh! Kedengarannya hari yang berat banget.</em>
+        </div>
+    </div>
+
+    <div class="chat-footer d-flex">
+        <input type="text" class="form-control chat-input" id="chatInput" placeholder="Type a message...">
+        <button class="btn ms-2" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+    <script>
+        function openChat(chatId) {
+            // Hide all chat windows
+            document.querySelectorAll('.chat-window').forEach(chat => chat.style.display = 'none');
+            // Show the selected one
+            document.getElementById(chatId).style.display = 'flex';
+            if (window.innerWidth <= 768) {
+                document.getElementById('chatList').style.display = 'none';
+            }
+        }
+        
+        function goBack() {
+            // On small screens, go back to chat list
+            document.getElementById('chatList').style.display = 'block';
+            document.querySelectorAll('.chat-window').forEach(chat => chat.style.display = 'none');
+        }
+        
+        function speakMessage(message) {
+            if ('speechSynthesis' in window) {
+                const utter = new SpeechSynthesisUtterance(message);
+                speechSynthesis.speak(utter);
+            } else {
+                alert('Sorry, your browser does not support speech synthesis.');
+            }
+        }
+        
+        function sendMessage() {
+            const visibleChat = document.querySelector('.chat-window[style*="flex"]');
+            const input = visibleChat.querySelector('.chat-input');
+            const messageContainer = visibleChat.querySelector('.chat-messages');
+            const userInput = input.value.trim();
+        
+            if (userInput === '') return;
+        
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.textContent = userInput;
+            messageContainer.appendChild(userMsg);
+        
+            // Auto-scroll to bottom
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        
+            // Clear input
+            input.value = '';
+        
+            // Example basic keyword handling
+            const lowerInput = userInput.toLowerCase();
+            let botReply = '';
+        
+            if (lowerInput.includes('ready')) {
+                botReply = 'Great! Let’s get started. Today’s phrase is: "Keep going" which means "Teruskan / Lanjutkan". You can use it to motivate someone.';
+            } else if (lowerInput.includes('thanks') || lowerInput.includes('thank you')) {
+                botReply = 'You’re welcome! Keep practicing!';
+            } else {
+                botReply = 'Nice! Let’s keep chatting in English.';
+            }
+        
+            const adminMsg = document.createElement('div');
+            adminMsg.className = 'message admin';
+            adminMsg.innerHTML = botReply;
+            adminMsg.onclick = () => speakMessage(botReply);
+            messageContainer.appendChild(adminMsg);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+        </script>
+        
+</body>
+</html>
